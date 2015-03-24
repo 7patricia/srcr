@@ -15,12 +15,6 @@
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % SICStus PROLOG: definicoes iniciais
 
-:- dynamic filho/2.
-:- dynamic pai/2.
-:- dynamic primo/2.
-:- dynamic tio/2.
-:- dynamic sobrinho/2.
-:- dynamic natural/2.
 
 %----------------------------------------------------------------------
 % Extensao do predicado comprimento: Lista,Comprimento -> {V,F}
@@ -36,17 +30,18 @@ nao(Questao) :-
 Questao, !, fail .
 nao(Questao) .
 
-%--------------------------------- - - - - - - - - - - - - - - -
-% Extensão do predicado apagaRepetidos: L, R -> {V, F}
-apagaRepetidos([], []) .
-apagaRepetidos([H|T], R) :- apagatudo(H, T, X), apagaRepetidos(X, Y), R = [H|Y] .
+%----------------------------------------------------------------
+% Extensao do predicado apagaTudo : Elemento, Lista, Resultado ->{V,F}
 
-%--------------------------------- - - - - - - - - - - - - - - -
-% Extensão do predicado apagatudo: E, L, R -> {V, F}
-apagatudo([], _, []).
-apagatudo(H, [H|T], R) :- apagatudo(H, T, X),R = X .
-apagatudo(E, [H|T], R) :- H \== E, apagatudo(E, T, X), R = [H|X] .
+apagaTudo(X,[],[]).
+apagaTudo(X,[X|L],R) :- apagaTudo(X,L,Res), R = Res.
+apagaTudo(X,[Y|L],R) :- X\==Y, apagaTudo(X,L,NL), R = [Y|NL].
 
+%----------------------------------------------------------------
+% Extensao do predicado apagaRepetidos: Lista,Resultado -> {V,F}
+
+apagaRepetidos([],[]).
+apagaRepetidos([X|L],R) :- apagaTudo(X,L,Res), apagaRepetidos(Res,ResFinal), R = [X|ResFinal].
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensão do predicado que permite a evolucao do conhecimento
@@ -274,20 +269,14 @@ R = S .
 
 irmao(A,B) :- pai(X,A), pai(X,B), A \== B.
 
-%
-%--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Extensao do predicado irmao: Irmao,Irmao -> {V,F}
-
-irmao(A,B) :- irmao(B,A).
-
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do predicado irmaos: Irmao,Resultados -> {V,F}
 
 irmaos(I, R) :-
 	findall(P, irmao(P, I), S),
-	apagaRepetidos(S,X),
-	R = X.
+	apagaRepetidos(S,Res),
+	R = Res.
 
 %---------------------------------------------------------------------
 % Extensão do predicado tio: Tio,Sobrinho -> {V,F}
@@ -299,8 +288,8 @@ tio(T,S) :- irmao(T,P), filho(S,P).
 
 tios(I, R) :-
 	findall(P, tio(P, I), S),
-	apagaRepetidos(S,X),
-	R = X .
+	apagaRepetidos(S,Res),
+	R = Res .
 
 %---------------------------------------------------------------------
 % Extensão do predicado primo: Primo, Primo -> {V,F}
@@ -312,8 +301,8 @@ primo(X,Y) :- pai(Z,X), tio(Z,Y).
 
 primos(I, R) :-
 	findall(P, primo(P, I), S),
-	apagaRepetidos(S,X),
-	R = X .
+	apagaRepetidos(S,Res),
+	R = Res .
 
 %---------------------------------------------------------------------
 % Extensão do predicado sobrinho: Sobrinho,Tio -> {V,F}
@@ -325,8 +314,8 @@ sobrinho(S,T) :- tio(T,S).
 
 sobrinhos(I, R) :-
 	findall(P, sobrinho(P, I), S),
-	apagaRepetidos(S,X),
-	R = X .
+	apagaRepetidos(S,Res),
+	R = Res .
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do predicado pai: Pai,Filho -> {V,F}
@@ -392,7 +381,7 @@ ascendentes(I,G,R) :- findall(A,ascendente(A,I,G),S),
 %---------------------------------------------------------------------
 % Extensão do predicado descendenteAte : Descendente, Ascendente, Grau -> {V,F}
 
-descendenteAte(D,A,G) :- descendente(D,A,Z), Z=<N.
+descendenteAte(D,A,G) :- descendente(D,A,Z), Z=<G.
 
 
 %---------------------------------------------------------------------
