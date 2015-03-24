@@ -14,7 +14,9 @@
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % SICStus PROLOG: definicoes iniciais
-
+:- dynamic natural/2.
+:- dynamic filho/2.
+:- dynamic pai/2.
 
 %----------------------------------------------------------------------
 % Extensao do predicado comprimento: Lista,Comprimento -> {V,F}
@@ -123,7 +125,7 @@ remocao(Termo) :- retract(Termo).
 
 +natural(I,N) :: (findall((Ns),(natural(I,Ns)),S),
 				comprimento(S,X),
-				X=<2
+				X=<1
 				).
 
 %--- INVARIANTES QUE NÃO PERMITEM MAIS DO QUE 2 PROGENITORES PARA O MESMO INDIVIDUO
@@ -166,6 +168,28 @@ remocao(Termo) :- retract(Termo).
 %---- INVARIANTE QUE NÃO PERMITE QUE O AVO SEJA PAI DO NETO
 +pai(P,F) :: nao(avo(P,F)).
 
+%---- INVARIANTE QUE NÃO PERMITE QUE O NETO SEJA PAI DO AVO
++pai(P,F) :: nao(neto(P,F)).
+
+%---- INVARIANTE QUE NÃO PERMITE QUE O Bisavo SEJA PAI DO Bisneto
++pai(P,F) :: nao(bisavo(P,F)).
+
+%---- INVARIANTE QUE NÃO PERMITE QUE O BISNETO SEJA PAI DO BISAVO
++pai(P,F) :: nao(bisneto(P,F)).
+
+%---- INVARIANTE QUE NÃO PERMITE QUE O Trisavo SEJA PAI DO Trisneto
++pai(P,F) :: nao(trisavo(P,F)).
+
+%---- INVARIANTE QUE NÃO PERMITE QUE O TRISNETO SEJA PAI DO TRISAVO
++pai(P,F) :: nao(trisneto(P,F)).
+
+%---- INVARIANTE QUE NÃO PERMITE QUE COMPANHEIROS SEJAM PAI UM DO OUTRO
++pai(P,F) :: nao(companheiro(P,F)).
+
+%---- INVARIANTE QUE NÃO PERMITE QUE CUNHADOS SEJAM PAI UM DO OUTRO
++pai(P,F) :: nao(cunhado(P,F)).
+
+
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do predicado filho: Filho,Pai -> {V,F}
@@ -205,6 +229,12 @@ filho(luis,manuel).
 
 filho(ze,argentina).
 filho(ze,manuel).
+
+filho(maria,isilda).
+filho(maria,nelo).
+
+filho(isilda,joana).
+
 
 %--------------------------------------------------------------------
 % Extensao do predicado natural : Individuo,Localidade -> {V,F}
@@ -264,6 +294,54 @@ netos(I, R) :-
 findall(P, neto(P, I), S),
 R = S .
 
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% Extensao do predicado bisavo: Bisavo,Bisneto -> {V,F}
+
+bisavo(X, Y) :- pai(X,Z), avo(Z,Y).
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% Extensao do predicado bisavos: Bisneto,Resultados -> {V,F}
+
+bisavos(I, R) :-
+findall(P, bisavo(P, I), S),
+R = S .
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% Extensao do predicado bisneto: Bisneto,Bisavo -> {V,F}
+
+bisneto(X, Y) :- bisavo(Y,X).
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% Extensao do predicado bisnetos: Bisavo,Resultados -> {V,F}
+
+bisnetos(I, R) :-
+findall(P, bisneto(P, I), S),
+R = S .
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% Extensao do predicado trisavo: Trisavo,Trineto -> {V,F}
+
+trisavo(X, Y) :- pai(X,Z), bisavo(Z,Y).
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% Extensao do predicado trisavos: Trisneto,Resultados -> {V,F}
+
+trisavos(I, R) :-
+findall(P, trisavo(P, I), S),
+R = S .
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% Extensao do predicado trisneto: Trisneto,Trisavo-> {V,F}
+
+trisneto(X, Y) :- trisavo(Y,Z).
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% Extensao do predicado trisnetos: Trisavo,Resultados -> {V,F}
+
+trisnetos(I, R) :-
+findall(P, trisneto(P, I), S),
+R = S .
+
 %----------------------------------------------------
 % Extensão do predicado irmao : Irmao,Irmao -> {V,F}
 
@@ -282,6 +360,7 @@ irmaos(I, R) :-
 % Extensão do predicado tio: Tio,Sobrinho -> {V,F}
 
 tio(T,S) :- irmao(T,P), filho(S,P).
+tio(T,S) :- companheiro(A,T), irmao(A,X), filho(S,X).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do predicado tios: Sobrinho,Resultados -> {V,F}
@@ -399,4 +478,37 @@ ascendenteAte(A,D,G) :- descendenteAte(D,A,G).
 % Extensão do predicado ascendentesAte : Descendente,Grau,Resultado -> {V,F}
 
 ascendentesAte(I,G,R) :- findall(A,ascendenteAte(A,I,G),S), R = S.
+
+%----------------------------------------------------------------------
+% Extensao do predicado relacao : Individuo, Individuo, Relacao -> {V,F}
+
+relacao(A,B,pai) :- pai(A,B).
+relacao(A,B,filho) :- filho(A,B).
+relacao(A,B,avo) :- avo(A,B).
+relacao(A,B,neto) :- neto(A,B).
+relacao(A,B,tio) :- tio(A,B).
+relacao(A,B,sobrinho) :- sobrinho(A,B).
+relacao(A,B,primo) :- primo(A,B).
+relacao(A,B,irmao) :- irmao(A,B).
+relacao(A,B,bisavo) :- bisavo(A,B).
+relacao(A,B,bisneto) :- bisneto(A,B).
+relacao(A,B,trisavo) :- trisavo(A,B).
+relacao(A,B,trisneto) :- trisneto(A,B).
+relacao(A,B,companheiro) :- companheiro(A,B).
+relacao(A,B,cunhado) :- cunhado(A,B).
+
+
+%-------------------------------------------------------------------------
+% Extensao do predicado companheiro : Individuo, Individuo -> {V,F}
+
+companheiro(A,B) :- filho(X,A), filho(X,B).
+
+%-------------------------------------------------------------------------
+% Extensao do predicado cunhado : Individuo, Individuo -> {V,F}
+
+cunhado(A,B) :- companheiro(A,X), irmao(X,B).
+cunhado(A,B) :- companheiro(A,X), irmao(X,Y), companheiro(Y,B).
+
+
+
 
