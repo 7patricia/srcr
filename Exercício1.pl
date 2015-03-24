@@ -189,8 +189,6 @@ remocao(Termo) :- retract(Termo).
 %---- INVARIANTE QUE NÃO PERMITE QUE CUNHADOS SEJAM PAI UM DO OUTRO
 +pai(P,F) :: nao(cunhado(P,F)).
 
-
-
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do predicado filho: Filho,Pai -> {V,F}
 
@@ -234,6 +232,7 @@ filho(maria,isilda).
 filho(maria,nelo).
 
 filho(isilda,joana).
+filho(isilda,joao).
 
 
 %--------------------------------------------------------------------
