@@ -227,24 +227,43 @@ anofabrico(3,1994).
 %...................................................................
 %...................................................................
 
-%Extensão do predicado proprietario :: Id, nome, dia, mes, ano -> {V,F,D}
+%Extensão do predicado proprietario :: Id, nome, ano -> {V,F,D}
 
-proprietario(1,manel,22,02,2015).
-proprietario(2,tiago,22,02,2010).
-proprietario(2,jorge,22,02,2013).
-proprietario(3,ze,22,02,1994).
-proprietario(3,carlos,22,02,2000).
-proprietario(3,zeca,22,02,2005).
-proprietario(3,rita,22,02,2010).
-proprietario(3,sara,22,02,2012).
+proprietario(1,manel,2015).
+proprietario(2,tiago,2010).
+proprietario(2,jorge,2013).
+proprietario(3,ze,1994).
+proprietario(3,carlos,2000).
+proprietario(3,zeca,2005).
+proprietario(3,rita,2010).
+proprietario(3,sara,2012).
 
 %....................................................................
 % Extensao do predicado proprietarios: Id,Resultados -> {V,F}
 
 proprietarios(I, R) :-
-findall(P, proprietario(I, P,D,M,A), S),
+findall(P, proprietario(I,P,A), S),
 R = S .
 
+%....................................................................
+% Extensão do predicado proprietarioDesde : Id,Nome,Ano -> {V,F,D}
+
+proprietarioDesde(I,N,A) :- proprietario(I,N,Z), Z>=A.
+
+%....................................................................
+% Extensão do predicado proprietariosDesde : Id,Ano,Resultado -> {V,F}
+
+proprietariosDesde(I,A,R) :- findall(N,proprietarioDesde(I,N,A),S), R = S.
+
+%....................................................................
+% Extensão do predicado proprietarioAte : Id,Nome,Ano -> {V,F,D}
+
+proprietarioAte(I,N,A) :- proprietario(I,N,Z), Z<A.
+
+%....................................................................
+% Extensão do predicado proprietariosAte : Id,Ano,Resultado -> {V,F}
+
+proprietariosAte(I,A,R) :- findall(N,proprietarioAte(I,N,A),S), R = S.
 
 %................................................................
 % INVARIANTES
