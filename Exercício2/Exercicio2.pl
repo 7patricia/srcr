@@ -68,7 +68,10 @@ automovelC(3,rego).
 
 % Extensão do predicado automovelM:: Id, marca -> {V,F,D}
 
-automovelM(1,nissan).
+automovelM( 1,marcax ).
+excecao( automovelM( F,P ) ) :-
+    automovelM( F,marcax ).
+
 automovelM(2,toyota).
 automovelM(3,opel).
 
@@ -127,7 +130,9 @@ automovelm(3,fininho).
 
 matricula(1, xxaa11).
 matricula(2, xxyy22).
-matricula(3, xxzz33).
+
+excecao( matricula( 3,xxzz33 ) ).
+excecao( matricula( 3,xxzy33 ) ).
 
 %................................................................
 % INVARIANTES
@@ -152,8 +157,12 @@ matricula(3, xxzz33).
 % Extensão do predicado cor :: Id, cor -> {V,F,D}
 
 cor(1,verde).
-cor(2,azul).
-cor(3,vermelho).
+
+cor( 2,corx ).
+excecao( cor( F,P ) ) :-
+    cor( F,corx ).
+
+cor(3,azul).
 
 %....................................................................
 % Extensao do predicado cores: Id,Resultados -> {V,F}
@@ -178,7 +187,10 @@ R = S .
 % Extensão do predicado estado :: Id, estado -> {V,F,D}
 
 estado(1,novo).
-estado(2,semi-novo).
+
+execao(estado(2,semi-novo)).
+execao(estado(2,novo)).
+
 estado(3,usado).
 
 %................................................................
@@ -205,7 +217,13 @@ estado(3,usado).
 
 anofabrico(1,2015).
 anofabrico(2,2010).
-anofabrico(3,1994).
+
+anofabrico( 3,anox ).
+excecao( anofabrico( F,P ) ) :-
+    anofabrico( 3,anox ).
+nulo( anox ).
+
+
 
 %................................................................
 % INVARIANTES
@@ -224,6 +242,12 @@ anofabrico(3,1994).
                   comprimento( S,N ), N =< 1
                   ).
 
+% Invariante para garantir que nunca vai ser inserido o ano de fabrico do carro 3
+
++anofabrico( F,P ) :: (solucoes( (3,As),(anofabrico(3,As),nao(nulo(As))),S ),
+                  comprimento( S,N ), N == 0 
+                  ).
+
 %...................................................................
 %...................................................................
 
@@ -232,8 +256,6 @@ anofabrico(3,1994).
 proprietario(1,manel,2015).
 proprietario(2,tiago,2010).
 proprietario(2,jorge,2013).
-proprietario(3,ze,1994).
-proprietario(3,carlos,2000).
 proprietario(3,zeca,2005).
 proprietario(3,rita,2010).
 proprietario(3,sara,2012).
@@ -265,19 +287,16 @@ proprietarioAte(I,N,A) :- proprietario(I,N,Z), Z<A.
 
 proprietariosAte(I,A,R) :- findall(N,proprietarioAte(I,N,A),S), R = S.
 
+
 %................................................................
 % INVARIANTES
 %................................................................
 
 % Invariante Estrutural:  nao permitir a insercao de conhecimento
 %                         repetido
-+proprietario( I,P,D,M,A ) :: (solucoes( (I,P,D,M,A),(proprietario( I,P,D,M,A )),S ),
++proprietario( I,P,A) :: (solucoes( (I,P,A),(proprietario( I,P,A )),S),
                   comprimento( S,N ), N == 1
                   ).
-
-% Invariante Referencial: nao admitir registos em que a data seja anterior ao ano de fabrico
-
-% DESCOBRIR COMO FAZER
 
 %......................................................................
 
