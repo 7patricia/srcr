@@ -45,6 +45,10 @@ automovelC(1,xico).
 automovelC(2,neves).
 automovelC(3,rego).
 
+-automovelC( A,C ) :-
+    nao( automovelC( A,C ) ),
+    nao( excecao( automovel( A,C ) ) ).
+
 %................................................................
 % INVARIANTES
 %................................................................
@@ -56,7 +60,7 @@ automovelC(3,rego).
                   comprimento( S,N ), N == 1
                   ).
 
-% Invariante Referencial: nao admitir mais do que 1 construtore
+% Invariante Referencial: nao admitir mais do que 1 construtor
 %                         para um mesmo automovel
 
 +automovelC( I,C ) :: (solucoes( (Cs),(automovelC( I,Cs )),S ),
@@ -74,6 +78,10 @@ excecao( automovelM( F,P ) ) :-
 
 automovelM(2,toyota).
 automovelM(3,opel).
+
+-automovelM( A,M ) :-
+    nao( automovelM( A,M ) ),
+    nao( excecao( automovelM( A,M ) ) ).
 
 
 %................................................................
@@ -103,6 +111,9 @@ automovelm(1,grandeCarro).
 automovelm(2,pequenoCarro).
 automovelm(3,fininho).
 
+-automovelm( A,M ) :-
+    nao( automovelm( A,M ) ),
+    nao( excecao( automovelm( A,M ) ) ).
 
 %................................................................
 % INVARIANTES
@@ -134,6 +145,10 @@ matricula(2, xxyy22).
 excecao( matricula( 3,xxzz33 ) ).
 excecao( matricula( 3,xxzy33 ) ).
 
+-matricula( A,M ) :-
+    nao( matricula( A,M ) ),
+    nao( excecao( matricula( A,M ) ) ).
+
 %................................................................
 % INVARIANTES
 %................................................................
@@ -164,6 +179,10 @@ excecao( cor( F,P ) ) :-
 
 cor(3,azul).
 
+-cor( A,C ) :-
+    nao( cor( A,C ) ),
+    nao( excecao( cor( A,C ) ) ).
+
 %....................................................................
 % Extensao do predicado cores: Id,Resultados -> {V,F}
 
@@ -186,12 +205,18 @@ R = S .
 
 % Extensão do predicado estado :: Id, estado -> {V,F,D}
 
+excecao( estado( 2,novo ) ).
+excecao( estado( 2,seminovo ) ).
+
+-estado( A,M ) :-
+    nao( estado( A,M ) ),
+    nao( excecao( estado( A,M ) ) ).
+
 estado(1,novo).
-
-execao(estado(2,semi-novo)).
-execao(estado(2,novo)).
-
 estado(3,usado).
+
+
+
 
 %................................................................
 % INVARIANTES
@@ -220,9 +245,13 @@ anofabrico(2,2010).
 
 anofabrico( 3,anox ).
 excecao( anofabrico( F,P ) ) :-
-    anofabrico( 3,anox ).
+    anofabrico( F,anox ).
+
 nulo( anox ).
 
+-anofabrico( A,C ) :-
+    nao( anofabrico( A,C ) ),
+    nao( excecao( anofabrico( A,C ) ) ).
 
 
 %................................................................
@@ -260,6 +289,10 @@ proprietario(3,zeca,2005).
 proprietario(3,rita,2010).
 proprietario(3,sara,2012).
 
+-proprietario( A,P,C ) :-
+    nao( proprietario( A,P,C ) ),
+    nao( excecao( proprietario( A,P,C ) ) ).
+
 %....................................................................
 % Extensao do predicado proprietarios: Id,Resultados -> {V,F}
 
@@ -272,6 +305,10 @@ R = S .
 
 proprietarioDesde(I,N,A) :- proprietario(I,N,Z), Z>=A.
 
+-proprietarioDesde( A,P,C ) :-
+    nao( proprietarioDesde( A,P,C ) ),
+    nao( excecao( proprietarioDesde( A,P,C ) ) ).
+
 %....................................................................
 % Extensão do predicado proprietariosDesde : Id,Ano,Resultado -> {V,F}
 
@@ -281,6 +318,10 @@ proprietariosDesde(I,A,R) :- findall(N,proprietarioDesde(I,N,A),S), R = S.
 % Extensão do predicado proprietarioAte : Id,Nome,Ano -> {V,F,D}
 
 proprietarioAte(I,N,A) :- proprietario(I,N,Z), Z<A.
+
+-proprietarioAte( A,P,C ) :-
+    nao( proprietarioAte( A,P,C ) ),
+    nao( excecao( proprietarioAte( A,P,C ) ) ).
 
 %....................................................................
 % Extensão do predicado proprietariosAte : Id,Ano,Resultado -> {V,F}
