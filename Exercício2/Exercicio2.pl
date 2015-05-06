@@ -32,7 +32,7 @@
 :- dynamic automovelm/2.
 :- dynamic cor/2.
 :- dynamic matricula/2.
-:- dynamic proprietario/5.
+:- dynamic proprietario/3.
 :- dynamic anofabrico/2.
 :- dynamic estado/2.
 
@@ -241,7 +241,8 @@ estado(3,usado).
 % Extensão do predicado anofabrico :: Id, ano -> {V,F,D}
 
 anofabrico(1,2015).
-anofabrico(2,2010).
+
+excecao(anofabrico(2,A)) :- A>=1998, A=<2000.
 
 anofabrico( 3,anox ).
 excecao( anofabrico( F,P ) ) :-
@@ -276,6 +277,7 @@ nulo( anox ).
 +anofabrico( F,P ) :: (solucoes( (3,As),(anofabrico(3,As),nao(nulo(As))),S ),
                   comprimento( S,N ), N == 0 
                   ).
+
 
 %...................................................................
 %...................................................................
@@ -339,6 +341,9 @@ proprietariosAte(I,A,R) :- findall(N,proprietarioAte(I,N,A),S), R = S.
                   comprimento( S,N ), N == 1
                   ).
 
+% Garantir que um registo de compra nunca tem data anterior ao ano de fabrico do automovel
+
++proprietario(I,P,A) :: (anofabrico(I,A2), A>=A2).
 %......................................................................
 
 evolucao( Termo ) :-
