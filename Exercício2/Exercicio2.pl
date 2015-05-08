@@ -67,6 +67,10 @@ automovelC(3,rego).
                   comprimento( S,N ), N =< 1
                   ).
 
+% Não é possivel remover o construtor de um automovel que tenha um ano de fabrico
+
+-automovelC(I,C) :: (-anofabrico(I,X)).
+
 %...................................................................
 %...................................................................
 
@@ -291,16 +295,11 @@ proprietario(3,zeca,2005).
 proprietario(3,rita,2010).
 proprietario(3,sara,2012).
 
+
 -proprietario( A,P,C ) :-
     nao( proprietario( A,P,C ) ),
     nao( excecao( proprietario( A,P,C ) ) ).
 
-%....................................................................
-% Extensao do predicado proprietarios: Id,Resultados -> {V,F}
-
-proprietarios(I, R) :-
-findall(P, proprietario(I,P,A), S),
-R = S .
 
 %....................................................................
 % Extensão do predicado proprietarioDesde : Id,Nome,Ano -> {V,F,D}
@@ -311,10 +310,6 @@ proprietarioDesde(I,N,A) :- proprietario(I,N,Z), Z>=A.
     nao( proprietarioDesde( A,P,C ) ),
     nao( excecao( proprietarioDesde( A,P,C ) ) ).
 
-%....................................................................
-% Extensão do predicado proprietariosDesde : Id,Ano,Resultado -> {V,F}
-
-proprietariosDesde(I,A,R) :- findall(N,proprietarioDesde(I,N,A),S), R = S.
 
 %....................................................................
 % Extensão do predicado proprietarioAte : Id,Nome,Ano -> {V,F,D}
@@ -324,11 +319,6 @@ proprietarioAte(I,N,A) :- proprietario(I,N,Z), Z<A.
 -proprietarioAte( A,P,C ) :-
     nao( proprietarioAte( A,P,C ) ),
     nao( excecao( proprietarioAte( A,P,C ) ) ).
-
-%....................................................................
-% Extensão do predicado proprietariosAte : Id,Ano,Resultado -> {V,F}
-
-proprietariosAte(I,A,R) :- findall(N,proprietarioAte(I,N,A),S), R = S.
 
 
 %................................................................
@@ -344,6 +334,8 @@ proprietariosAte(I,A,R) :- findall(N,proprietarioAte(I,N,A),S), R = S.
 % Garantir que um registo de compra nunca tem data anterior ao ano de fabrico do automovel
 
 +proprietario(I,P,A) :: (anofabrico(I,A2), A>=A2).
+
+
 %......................................................................
 
 evolucao( Termo ) :-
@@ -361,16 +353,32 @@ teste( [R|LR] ) :-
     R,
     teste( LR ).
 
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% Extensão do predicado que permite a remoção de conhecimento: Termo -> {v, F}
+
+remocao(Termo) :-
+        findall( Invariante, -Termo::Invariante, Lista),
+        teste( Lista ) ,
+        remover(Termo).
+        
+remover(Termo) :-
+        retract(Termo).
+
 %....................................................................
 % Extensao do meta-predicado demo: Questao,Resposta -> {V,F}
 
-demo( Questao,verdadeiro ) :-
-    Questao.
-demo( Questao, falso ) :-
-    -Questao.
-demo( Questao,desconhecido ) :-
-    nao( Questao ),
-    nao( -Questao ).
+demo( [],[] ).
+demo( [X|L],LR ) :-
+	demoAux( X,R ),
+	demo( L,[R|LR] ).
+
+demoAux( Q,verdadeiro ) :-
+    Q.
+demoAux( Q,falso ) :-
+    -Q.
+demoAux( Q,desconhecido ) :-
+    nao( Q ),
+    nao( -Q ).
 
 %......................................................................
 % Extensao do meta-predicado nao: Questao -> {V,F}
