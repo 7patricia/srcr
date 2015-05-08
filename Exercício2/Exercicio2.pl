@@ -1,4 +1,4 @@
-%.....................................................................
+﻿%.....................................................................
 % SIST. REPR. CONHECIMENTO E RACIOCINIO - LEI/3.......................
 %.....................................................................
 % EXERCICIO 2 ........................................................
@@ -44,6 +44,11 @@
 automovelC(1,xico).
 automovelC(2,neves).
 automovelC(3,rego).
+automovelC(4,xico).
+automovelC(5,rego).
+automovelC(6,neves).
+automovelC(7,xico).
+automovelC(8,neves).
 
 -automovelC( A,C ) :-
     nao( automovelC( A,C ) ),
@@ -82,6 +87,11 @@ excecao( automovelM( F,P ) ) :-
 
 automovelM(2,toyota).
 automovelM(3,opel).
+automovelM(4,toyota).
+automovelM(5,toyota).
+automovelM(6,opel).
+automovelM(7,mercedes).
+automovelM(8,nissan).
 
 -automovelM( A,M ) :-
     nao( automovelM( A,M ) ),
@@ -114,6 +124,11 @@ automovelM(3,opel).
 automovelm(1,grandeCarro).
 automovelm(2,pequenoCarro).
 automovelm(3,fininho).
+automovelm(4,grandeCarro).
+automovelm(5,grandeCarro).
+automovelm(6,pequenoCarro).
+automovelm(7,fininho).
+automovelm(8,fininho).
 
 -automovelm( A,M ) :-
     nao( automovelm( A,M ) ),
@@ -145,6 +160,13 @@ automovelm(3,fininho).
 
 matricula(1, xxaa11).
 matricula(2, xxyy22).
+matricula(3, xxzz33).
+matricula(4, yxxy44).
+matricula(5, xzzy55).
+matricula(6, yxyx66).
+matricula(7, yyxz77).
+matricula(8, zzxy88).
+
 
 excecao( matricula( 3,xxzz33 ) ).
 excecao( matricula( 3,xxzy33 ) ).
@@ -176,12 +198,17 @@ excecao( matricula( 3,xxzy33 ) ).
 % Extensão do predicado cor :: Id, cor -> {V,F,D}
 
 cor(1,verde).
+cor(3,azul).
+cor(4,rosa).
+cor(5,azul).
+cor(6,preto).
+cor(7,azul).
+cor(8,preto).
 
 cor( 2,corx ).
 excecao( cor( F,P ) ) :-
     cor( F,corx ).
 
-cor(3,azul).
 
 -cor( A,C ) :-
     nao( cor( A,C ) ),
@@ -218,6 +245,11 @@ excecao( estado( 2,seminovo ) ).
 
 estado(1,novo).
 estado(3,usado).
+estado(4,semi-novo).
+estado(5,novo).
+estado(6,usado).
+estado(7,usado).
+estado(8,semi-novo).
 
 
 
@@ -245,6 +277,13 @@ estado(3,usado).
 % Extensão do predicado anofabrico :: Id, ano -> {V,F,D}
 
 anofabrico(1,2015).
+anofabrico(4,2002).
+anofabrico(5,2003).
+anofabrico(6,2003).
+anofabrico(7,2010).
+anofabrico(8,2011).
+
+
 
 excecao(anofabrico(2,A)) :- A>=1998, A=<2000.
 
@@ -289,12 +328,29 @@ nulo( anox ).
 %Extensão do predicado proprietario :: Id, nome, ano -> {V,F,D}
 
 proprietario(1,manel,2015).
+
 proprietario(2,tiago,2010).
 proprietario(2,jorge,2013).
+
 proprietario(3,zeca,2005).
 proprietario(3,rita,2010).
 proprietario(3,sara,2012).
 
+proprietario(4,tozé,2005).
+proprietario(4,tiago,2006).
+proprietario(4,ricardo,2013).
+
+proprietario(5,manuel,2006).
+proprietario(5,rita,2008).
+
+proprietario(6,patricia,2012).
+
+proprietario(7,joana,2010).
+proprietario(7,joao,2011).
+
+proprietario(8,andre,2014).
+proprietario(8,sandra,2015).
+proprietario(8,daniela,2013).
 
 -proprietario( A,P,C ) :-
     nao( proprietario( A,P,C ) ),
