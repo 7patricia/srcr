@@ -18,16 +18,15 @@ public class Menu {
         System.out.println("\n\n");
         System.out.println("1. Boletim de um automóvel.");
         System.out.println("2. Registos de propriedade de um automóvel.");
-        System.out.println("4. Registos de propriedade de um automóvel desde um determinado ano.");
-        System.out.println("5. Registos de propriedade de um automóvel até um determinado ano.");
-        System.out.println("6. Automoveis de determinada cor.");
-        System.out.println("7. Automoveis num determinado estado.");
-        System.out.println("8. Automoveis de uma determinada marca.");
-        System.out.println("9. Automoveis de um determinada modelo.");
+        System.out.println("3. Registos de propriedade de um automóvel desde um determinado ano.");
+        System.out.println("3. Registos de propriedade de um automóvel até um determinado ano.");
+        System.out.println("5. Automoveis de determinada cor.");
+        System.out.println("6. Automoveis num determinado estado.");
+        System.out.println("7. Automoveis de uma determinada marca.");
+        System.out.println("8. Automoveis de um determinada modelo.");
         System.out.println("9. Automoveis de um determinado construtor.");
-        System.out.println("9. Automoveis construídos num determinado ano.");
-        System.out.println("10. Inserir dados de um automóvel");
-        System.out.println("11. Remover dados de um automóvel");
+        System.out.println("10. Automoveis construídos num determinado ano.");
+        System.out.println("11. Inserir dados de um automóvel");
         System.out.println("12. Remover dados de um automóvel");
         System.out.println("\n");
     }
