@@ -24,7 +24,7 @@ public class Prolog {
     }
     
     public String construtor(int id) throws SPException, InterruptedException, Exception{
-        String queryS = "automovelC("+id+",X).";
+        String queryS = "demo(automovelC,"+id+",X).";
         String res="";
         
         HashMap map = new HashMap();
@@ -227,18 +227,6 @@ public class Prolog {
         return res;
     }
    
-   public String evolucaoConstrutor(int id, String Cons) throws SPException, InterruptedException, Exception{
-       String queryS = "evolucao(automovelC,"+id+","+Cons+").";
-       String res = "";
-       
-       HashMap map = new HashMap();
-       Query query = sp.openPrologQuery(queryS,map);
-       while(query.nextSolution()){
-            res = map.toString();
-        }
-        return res;
-       
-   }
    
    public void printArray(ArrayList<String> array){
        
