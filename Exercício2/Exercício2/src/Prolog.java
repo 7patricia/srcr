@@ -24,7 +24,7 @@ public class Prolog {
     }
     
     public String construtor(int id) throws SPException, InterruptedException, Exception{
-        String queryS = "demo(automovelC,"+id+",X).";
+        String queryS = "automovelC("+id+",X).";
         String res="";
         
         HashMap map = new HashMap();

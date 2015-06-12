@@ -2,7 +2,7 @@ library("neuralnet")
 library(hydroGOF)
 
 #ler dataset de treino
-dataset<-read.csv("C:\\Users\\Patrícia\\Desktop\\LEI 3.2\\SRCR\\srcr\\Exercicio3\\exercicio3b.csv")
+dataset<-read.csv("C:\\Users\\Patrícia\\Desktop\\LEI 3.2\\SRCR\\srcr\\Exercicio3\\exercicio3.csv")
 
 #criar novo dataset para segunda alínea
 dataset2<-dataset

@@ -38,6 +38,8 @@ public class SRCR {
                     System.out.println("Modelo: " + p.modelo(id));
                     System.out.println("Matrícula: " + p.matricula(id));
                     System.out.println("Cor: " + p.cor(id));
+                    System.out.println("Ano de Fabrico: " + p.anofabrico(id));
+                    System.out.println("Estado: " + p.estado(id));
                     break;
                 case 2:
                     System.out.println("Insira id do automóvel: ");
